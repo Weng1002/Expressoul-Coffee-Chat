@@ -50,8 +50,6 @@ namespace UnityEngine.XR.Templates.MR
         public TMP_Text extend_question3_text;
         int [] order_list = new int[3];
         int question_refresh_times = 0;
-        float time = 20;
-        bool first_time_access_text = true;
         RectTransform rt;
 
 
@@ -193,8 +191,8 @@ namespace UnityEngine.XR.Templates.MR
                 if (question_refresh_times == 0)
                 {
                     question_refresh_times += 1;
-                    question1.text = WavSender.Q12;
-                    question2.text = WavSender.Q22;
+                    question1.text = "Q1 Already refreshed";
+                    question2.text = "Q2 Already refreshed";
                     m_LearnButton.SetActive(false);
                     question_refresh_times = 0;
                 }
@@ -212,31 +210,6 @@ namespace UnityEngine.XR.Templates.MR
 
         void Update()
         {
-            Debug.Log(time);
-            if (time > 0)
-            {
-                time -= Time.deltaTime;
-            }
-            else
-            {
-                time = 20;
-                if (first_time_access_text)
-                {
-                    question1.text = WavSender.Q11;
-                    question2.text = WavSender.Q21;
-                    first_time_access_text = false;
-                }
-                else
-                {
-                    question1.text = WavSender.Q11;
-                    question2.text = WavSender.Q21;
-                }
-                if (onoff_status == 1 && question_refresh_times == 0)
-                {
-                    m_LearnButton.SetActive(true);
-                }
-                
-            }
             if (!m_AllGoalsFinished)
             {
                 ProcessGoals();
