@@ -35,9 +35,14 @@ namespace UnityEngine.XR.Templates.MR
         bool m_AllGoalsFinished;
         int m_SurfacesTapped;
         int m_CurrentGoalIndex = 0;
-        int onoff_status = 1;
+        int onoff_status = 0;
         public TMP_Text on;
         public TMP_Text off;
+        public TMP_Text question;
+        int question_status = 0;
+        int question_1_refresh_times = 0;
+        int question_2_refresh_times = 0;
+
 
         [Serializable]
         class Step
@@ -172,7 +177,18 @@ namespace UnityEngine.XR.Templates.MR
         {
             if (m_LearnModal != null)
             {
-                m_LearnModal.transform.localScale = Vector3.one;
+                // m_LearnModal.transform.localScale = Vector3.one;
+                if (question_status == 1)
+                {
+                    question_1_refresh_times += 1;
+                    question.text = "Q1 Refreshed " + question_1_refresh_times;
+                }
+                else
+                {
+                    question_2_refresh_times += 1;
+                    question.text = "Q2 Refreshed " + question_2_refresh_times;
+                }
+                
             }
         }
 
@@ -180,7 +196,7 @@ namespace UnityEngine.XR.Templates.MR
         {
             if (m_LearnModal != null)
             {
-                m_LearnModal.transform.localScale = Vector3.zero;
+                // m_LearnModal.transform.localScale = Vector3.zero;
             }
         }
 
@@ -274,6 +290,15 @@ namespace UnityEngine.XR.Templates.MR
             if (m_LearnButton != null)
             {
                 m_LearnButton.SetActive(true);
+                question_status = 1;
+                if (question_1_refresh_times > 0)
+                {
+                    question.text = "Q1 Refreshed " + question_1_refresh_times;
+                }
+                else
+                {
+                    question.text = "Question 1";
+                }
             }
         }
         public void onoff()
@@ -396,6 +421,15 @@ namespace UnityEngine.XR.Templates.MR
             if (m_LearnButton != null)
             {
                 m_LearnButton.SetActive(true);
+                question_status = 2;
+                if (question_2_refresh_times > 0)
+                {
+                    question.text = "Q2 Refreshed " + question_2_refresh_times;
+                }
+                else
+                {
+                    question.text = "Question 2";
+                }
             }
         }
 

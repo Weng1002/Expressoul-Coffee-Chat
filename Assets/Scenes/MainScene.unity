@@ -695,6 +695,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3032334164735723895, guid: 66d40221d132d04499855da9ce315f20, type: 3}
   m_PrefabInstance: {fileID: 1364055689}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &473004466 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2216290957306976635, guid: 66d40221d132d04499855da9ce315f20, type: 3}
+  m_PrefabInstance: {fileID: 1364055689}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &522728844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4342425361971797402, guid: b6d57cedc6a73c94aad8ce006a26b41b, type: 3}
@@ -1847,6 +1858,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -150.00002
       objectReference: {fileID: 0}
+    - target: {fileID: 3032334164164963438, guid: 66d40221d132d04499855da9ce315f20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3032334164164963440, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.18039216
@@ -2033,6 +2048,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 128
       objectReference: {fileID: 0}
+    - target: {fileID: 3032334164735723895, guid: 66d40221d132d04499855da9ce315f20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3032334164735723897, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2191,7 +2210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6065621141793395216, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_fontColor.a
-      value: 0.47843137
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6065621141793395216, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_fontColor.b
@@ -2207,7 +2226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6065621141793395216, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 2063597567
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 6065621141793395216, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -2222,6 +2241,10 @@ PrefabInstance:
       value: 114.28372
       objectReference: {fileID: 0}
     - target: {fileID: 6254569346731431561, guid: 66d40221d132d04499855da9ce315f20, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254569346731431561, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -2235,7 +2258,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6254569346731431561, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4294967295
+      value: 2164260863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254569346731431561, guid: 66d40221d132d04499855da9ce315f20, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 6369550469128048131, guid: 66d40221d132d04499855da9ce315f20, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2987,6 +3014,10 @@ PrefabInstance:
       propertyPath: off
       value: 
       objectReference: {fileID: 1338751409}
+    - target: {fileID: 9196333150773566786, guid: 1782b89ac15b3c34cbc28f0ede57d895, type: 3}
+      propertyPath: question
+      value: 
+      objectReference: {fileID: 473004466}
     - target: {fileID: 9196333150773566786, guid: 1782b89ac15b3c34cbc28f0ede57d895, type: 3}
       propertyPath: m_LearnModal
       value: 
