@@ -555,6 +555,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b628c55da6fc2bb4f88b18dff59bfb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  on: {fileID: 0}
+  off: {fileID: 0}
+  question1: {fileID: 0}
+  question2: {fileID: 0}
+  extend_question1: {fileID: 0}
+  extend_question1_text: {fileID: 0}
+  extend_question2: {fileID: 0}
+  extend_question2_text: {fileID: 0}
+  extend_question3: {fileID: 0}
+  extend_question3_text: {fileID: 0}
   m_StepList:
   - stepObject: {fileID: 0}
     buttonText: Continue
@@ -570,6 +580,7 @@ MonoBehaviour:
     includeSkipButton: 0
   m_StepButtonTextField: {fileID: 0}
   m_SkipButton: {fileID: 0}
+  m_ContinueButton: {fileID: 0}
   m_LearnButton: {fileID: 0}
   m_LearnModal: {fileID: 0}
   m_LearnModalButton: {fileID: 0}
@@ -1258,7 +1269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5e7045ec6a31048afad1c854a0d6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SpawnWithAnchor: 1
   m_SpawnAsPersistentAnchor: 1
   m_LoadSavedAnchorsOnStart: 0
   m_ObjectSelectorDropdown: {fileID: 0}
@@ -2359,6 +2369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382a7d029b7cc7a4c985d053963fc9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_OcclusionManager: {fileID: 0}
   m_PlaneManager: {fileID: 5497310570242624798}
   m_PlaneVisualsEnabled: 1
   m_BoundingBoxManager: {fileID: 2223443224497048495}

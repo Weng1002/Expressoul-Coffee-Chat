@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using TMPro;
 using LazyFollow = UnityEngine.XR.Interaction.Toolkit.UI.LazyFollow;
+using System.Diagnostics;
+using System.Linq;
 
 namespace UnityEngine.XR.Templates.MR
 {
@@ -38,10 +40,17 @@ namespace UnityEngine.XR.Templates.MR
         int onoff_status = 0;
         public TMP_Text on;
         public TMP_Text off;
-        public TMP_Text question;
-        int question_status = 0;
-        int question_1_refresh_times = 0;
-        int question_2_refresh_times = 0;
+        public TMP_Text question1;
+        public TMP_Text question2;
+        public GameObject extend_question1;
+        public TMP_Text extend_question1_text;
+        public GameObject extend_question2;
+        public TMP_Text extend_question2_text;
+        public GameObject extend_question3;
+        public TMP_Text extend_question3_text;
+        int [] order_list = new int[3];
+        int question_refresh_times = 0;
+        RectTransform rt;
 
 
         [Serializable]
@@ -107,6 +116,7 @@ namespace UnityEngine.XR.Templates.MR
 
         void Start()
         {
+            
             m_OnboardingGoals = new Queue<Goal>();
             var welcomeGoal = new Goal(OnboardingGoals.Empty);
             var findSurfaceGoal = new Goal(OnboardingGoals.FindSurfaces);
@@ -178,17 +188,14 @@ namespace UnityEngine.XR.Templates.MR
             if (m_LearnModal != null)
             {
                 // m_LearnModal.transform.localScale = Vector3.one;
-                if (question_status == 1)
+                if (question_refresh_times == 0)
                 {
-                    question_1_refresh_times += 1;
-                    question.text = "Q1 Refreshed " + question_1_refresh_times;
+                    question_refresh_times += 1;
+                    question1.text = "Q1 Already refreshed";
+                    question2.text = "Q2 Already refreshed";
+                    m_LearnButton.SetActive(false);
+                    question_refresh_times = 0;
                 }
-                else
-                {
-                    question_2_refresh_times += 1;
-                    question.text = "Q2 Refreshed " + question_2_refresh_times;
-                }
-                
             }
         }
 
@@ -197,6 +204,7 @@ namespace UnityEngine.XR.Templates.MR
             if (m_LearnModal != null)
             {
                 // m_LearnModal.transform.localScale = Vector3.zero;
+
             }
         }
 
@@ -287,19 +295,79 @@ namespace UnityEngine.XR.Templates.MR
             //     m_SurfacesTapped = 0;
             //     m_ObjectSpawner.objectSpawned += OnObjectSpawned;
             // }
-            if (m_LearnButton != null)
+            // for (int i = 0; i < order_list.Length; i++)
+            // {
+            //     Debug.Log(order_list[i]);
+            // }
+            int count = order_list.Count(x => x == 0);
+            if (count == 3)
             {
-                m_LearnButton.SetActive(true);
-                question_status = 1;
-                if (question_1_refresh_times > 0)
+                order_list[0] = 1;
+                extend_question1_text.text = question1.text;
+                extend_question1.SetActive(true);
+                rt = extend_question1.GetComponent<RectTransform>();
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = 175f;
+                rt.anchoredPosition = pos;
+            }
+            else if (count == 2)
+            {
+                if (order_list[0] == 1)
                 {
-                    question.text = "Q1 Refreshed " + question_1_refresh_times;
+                    order_list[1] = 2;
+                    extend_question2_text.text = question1.text;
+                    extend_question2.SetActive(true);
+                    rt = extend_question2.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 120f;
+                    rt.anchoredPosition = pos;
                 }
-                else
+                else if (order_list[0] == 2 || order_list[0] == 3)
                 {
-                    question.text = "Question 1";
+                    order_list[1] = 1;
+                    extend_question1_text.text = question1.text;
+                    extend_question1.SetActive(true);
+                    rt = extend_question1.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 120f;
+                    rt.anchoredPosition = pos;
                 }
             }
+            else if (count == 1)
+            {
+                if ((order_list[0] == 1 && order_list[1] == 2) || (order_list[0] == 2 && order_list[1] == 1))
+                {
+                    order_list[2] = 3;
+                    extend_question3_text.text = question1.text;
+                    extend_question3.SetActive(true);
+                    rt = extend_question3.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+                else if ((order_list[0] == 1 && order_list[1] == 3) || (order_list[0] == 3 && order_list[1] == 1))
+                {
+                    order_list[2] = 2;
+                    extend_question2_text.text = question1.text;
+                    extend_question2.SetActive(true);
+                    rt = extend_question2.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+                else if ((order_list[0] == 2 && order_list[1] == 3) || (order_list[0] == 3 && order_list[1] == 2))
+                {
+                    order_list[2] = 1;
+                    extend_question1_text.text = question1.text;
+                    extend_question1.SetActive(true);
+                    rt = extend_question1.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+            }
+            question1.text = "Loading...";
+            // Debug.Log(order_list[0]);
         }
         public void onoff()
         {
@@ -311,14 +379,255 @@ namespace UnityEngine.XR.Templates.MR
                 m_LearnButton.SetActive(false);
                 m_SkipButton.SetActive(false);
                 m_ContinueButton.SetActive(false);
+                extend_question1.SetActive(false);
+                extend_question2.SetActive(false);
+                extend_question3.SetActive(false);
             }
             else
             {
                 onoff_status = 1;
                 on.alpha = 1.0f;
                 off.alpha = 0.5f;
+                if (question_refresh_times == 0)
+                {
+                    m_LearnButton.SetActive(true);
+                }
                 m_SkipButton.SetActive(true);
                 m_ContinueButton.SetActive(true);
+                if (Array.IndexOf(order_list, 1) != -1)
+                {
+                    extend_question1.SetActive(true);
+                }
+                if (Array.IndexOf(order_list, 2) != -1)
+                {
+                    extend_question2.SetActive(true);
+                }
+                if (Array.IndexOf(order_list, 3) != -1)
+                {
+                    extend_question3.SetActive(true);
+                }
+            }
+        }
+        public void Q1()
+        {
+            extend_question1.SetActive(false);
+            int count = order_list.Count(x => x == 0);
+            Debug.Log(count);
+            if (count == 0)
+            {
+                if (Array.IndexOf(order_list, 1) == 0)
+                {
+                    order_list[0] = order_list[1];
+                    order_list[1] = order_list[2];
+                }
+                else if (Array.IndexOf(order_list, 1) == 1)
+                {
+                    order_list[1] = order_list[2];
+                }    
+                order_list[2] = 0;
+                for (int i = 0; i < 2; i++)
+                {
+                    Debug.Log(order_list[i]);
+                    if (order_list[i] == 1)
+                    {
+                        rt = extend_question1.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 2)
+                    {
+                        rt = extend_question2.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 3)
+                    {
+                        rt = extend_question3.GetComponent<RectTransform>();
+                    }
+                    if (i == 0)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 175f;
+                        rt.anchoredPosition = pos;
+                    }
+                    else if (i == 1)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 120f;
+                        rt.anchoredPosition = pos;
+                    }
+                }
+            }
+            else if (count == 1)
+            {
+                if (Array.IndexOf(order_list, 1) == 0)
+                {
+                    order_list[0] = order_list[1];
+                }
+                order_list[1] = 0;
+                if (order_list[0] == 1)
+                {
+                    rt = extend_question1.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 2)
+                {
+                    rt = extend_question2.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 3)
+                {
+                    rt = extend_question3.GetComponent<RectTransform>();
+                }
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = 175f;
+                rt.anchoredPosition = pos;
+            }
+            else if (count == 2)
+            {
+                order_list[0] = 0;
+            }
+        }
+        public void Q2()
+        {
+            extend_question2.SetActive(false);
+            int count = order_list.Count(x => x == 0);
+            Debug.Log(count);
+            if (count == 0)
+            {
+                if (Array.IndexOf(order_list, 2) == 0)
+                {
+                    order_list[0] = order_list[1];
+                    order_list[1] = order_list[2];
+                }
+                else if (Array.IndexOf(order_list, 2) == 1)
+                {
+                    order_list[1] = order_list[2];
+                }    
+                order_list[2] = 0;
+                for (int i = 0; i < 2; i++)
+                {
+                    Debug.Log(order_list[i]);
+                    if (order_list[i] == 1)
+                    {
+                        rt = extend_question1.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 2)
+                    {
+                        rt = extend_question2.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 3)
+                    {
+                        rt = extend_question3.GetComponent<RectTransform>();
+                    }
+                    if (i == 0)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 175f;
+                        rt.anchoredPosition = pos;
+                    }
+                    else if (i == 1)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 120f;
+                        rt.anchoredPosition = pos;
+                    }
+                }
+            }
+            else if (count == 1)
+            {
+                if (Array.IndexOf(order_list, 2) == 0)
+                {
+                    order_list[0] = order_list[1];
+                }
+                order_list[1] = 0;
+                if (order_list[0] == 1)
+                {
+                    rt = extend_question1.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 2)
+                {
+                    rt = extend_question2.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 3)
+                {
+                    rt = extend_question3.GetComponent<RectTransform>();
+                }
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = 175f;
+                rt.anchoredPosition = pos;
+            }
+            else if (count == 2)
+            {
+                order_list[0] = 0;
+            }
+        }
+        public void Q3()
+        {
+            extend_question3.SetActive(false);
+            int count = order_list.Count(x => x == 0);
+            Debug.Log(count);
+            if (count == 0)
+            {
+                if (Array.IndexOf(order_list, 3) == 0)
+                {
+                    order_list[0] = order_list[1];
+                    order_list[1] = order_list[2];
+                }
+                else if (Array.IndexOf(order_list, 3) == 1)
+                {
+                    order_list[1] = order_list[2];
+                }       
+                order_list[2] = 0;         
+                for (int i = 0; i < 2; i++)
+                {
+                    Debug.Log(order_list[i]);
+                    if (order_list[i] == 1)
+                    {
+                        rt = extend_question1.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 2)
+                    {
+                        rt = extend_question2.GetComponent<RectTransform>();
+                    }
+                    else if (order_list[i] == 3)
+                    {
+                        rt = extend_question3.GetComponent<RectTransform>();
+                    }
+                    if (i == 0)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 175f;
+                        rt.anchoredPosition = pos;
+                    }
+                    else if (i == 1)
+                    {
+                        Vector2 pos = rt.anchoredPosition;
+                        pos.y = 120f;
+                        rt.anchoredPosition = pos;
+                    }
+                }
+            }
+            else if (count == 1)
+            {
+                if (Array.IndexOf(order_list, 3) == 0)
+                {
+                    order_list[0] = order_list[1];
+                }
+                order_list[1] = 0;
+                if (order_list[0] == 1)
+                {
+                    rt = extend_question1.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 2)
+                {
+                    rt = extend_question2.GetComponent<RectTransform>();
+                }
+                else if (order_list[0] == 3)
+                {
+                    rt = extend_question3.GetComponent<RectTransform>();
+                }
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = 175f;
+                rt.anchoredPosition = pos;
+            }
+            else if (count == 2)
+            {
+                order_list[0] = 0;
             }
         }
 
@@ -418,19 +727,74 @@ namespace UnityEngine.XR.Templates.MR
             // }
 
             // StartCoroutine(TurnOnARFeatures());
-            if (m_LearnButton != null)
+            int count = order_list.Count(x => x == 0);
+            if (count == 3)
             {
-                m_LearnButton.SetActive(true);
-                question_status = 2;
-                if (question_2_refresh_times > 0)
+                order_list[0] = 1;
+                extend_question1_text.text = question2.text;
+                extend_question1.SetActive(true);
+                rt = extend_question1.GetComponent<RectTransform>();
+                Vector2 pos = rt.anchoredPosition;
+                pos.y = 175f;
+                rt.anchoredPosition = pos;
+            }
+            else if (count == 2)
+            {
+                if (order_list[0] == 1)
                 {
-                    question.text = "Q2 Refreshed " + question_2_refresh_times;
+                    order_list[1] = 2;
+                    extend_question2_text.text = question2.text;
+                    extend_question2.SetActive(true);
+                    rt = extend_question2.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 120f;
+                    rt.anchoredPosition = pos;
                 }
-                else
+                else if (order_list[0] == 2 || order_list[0] == 3)
                 {
-                    question.text = "Question 2";
+                    order_list[1] = 1;
+                    extend_question1_text.text = question2.text;
+                    extend_question1.SetActive(true);
+                    rt = extend_question1.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 120f;
+                    rt.anchoredPosition = pos;
                 }
             }
+            else if (count == 1)
+            {
+                if ((order_list[0] == 1 && order_list[1] == 2) || (order_list[0] == 2 && order_list[1] == 1))
+                {
+                    order_list[2] = 3;
+                    extend_question3_text.text = question2.text;
+                    extend_question3.SetActive(true);
+                    rt = extend_question3.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+                else if ((order_list[0] == 1 && order_list[1] == 3) || (order_list[0] == 3 && order_list[1] == 1))
+                {
+                    order_list[2] = 2;
+                    extend_question2_text.text = question2.text;
+                    extend_question2.SetActive(true);
+                    rt = extend_question2.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+                else if ((order_list[0] == 2 && order_list[1] == 3) || (order_list[0] == 3 && order_list[1] == 2))
+                {
+                    order_list[2] = 1;
+                    extend_question1_text.text = question2.text;
+                    extend_question1.SetActive(true);
+                    rt = extend_question1.GetComponent<RectTransform>();
+                    Vector2 pos = rt.anchoredPosition;
+                    pos.y = 65;
+                    rt.anchoredPosition = pos;
+                }
+            }
+            question2.text = "Loading...";
         }
 
         public void ResetCoaching()
