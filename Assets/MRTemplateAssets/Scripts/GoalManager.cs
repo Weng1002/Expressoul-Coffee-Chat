@@ -221,51 +221,55 @@ namespace UnityEngine.XR.Templates.MR
 
         void CompleteGoal()
         {
-            if (m_CurrentGoal.CurrentGoal == OnboardingGoals.TapSurface)
-                m_ObjectSpawner.objectSpawned -= OnObjectSpawned;
+            // if (m_CurrentGoal.CurrentGoal == OnboardingGoals.TapSurface)
+            //     m_ObjectSpawner.objectSpawned -= OnObjectSpawned;
 
-            // disable tooltips before setting next goal
-            DisableTooltips();
+            // // disable tooltips before setting next goal
+            // DisableTooltips();
 
-            m_CurrentGoal.Completed = true;
-            m_CurrentGoalIndex++;
-            if (m_OnboardingGoals.Count > 0)
+            // m_CurrentGoal.Completed = true;
+            // m_CurrentGoalIndex++;
+            // if (m_OnboardingGoals.Count > 0)
+            // {
+            //     m_CurrentGoal = m_OnboardingGoals.Dequeue();
+            //     m_StepList[m_CurrentGoalIndex - 1].stepObject.SetActive(false);
+            //     m_StepList[m_CurrentGoalIndex].stepObject.SetActive(true);
+            //     m_StepButtonTextField.text = m_StepList[m_CurrentGoalIndex].buttonText;
+            //     m_SkipButton.SetActive(m_StepList[m_CurrentGoalIndex].includeSkipButton);
+            // }
+            // else
+            // {
+            //     m_AllGoalsFinished = true;
+            //     ForceEndAllGoals();
+            // }
+
+            // if (m_CurrentGoal.CurrentGoal == OnboardingGoals.FindSurfaces)
+            // {
+            //     if (m_FadeMaterial != null)
+            //         m_FadeMaterial.FadeSkybox(true);
+
+            //     if (m_PassthroughToggle != null)
+            //         m_PassthroughToggle.isOn = true;
+
+            //     if (m_LearnButton != null)
+            //     {
+            //         m_LearnButton.SetActive(true);
+            //     }
+
+            //     StartCoroutine(TurnOnPlanes(true));
+            // }
+            // else if (m_CurrentGoal.CurrentGoal == OnboardingGoals.TapSurface)
+            // {
+            //     if (m_LearnButton != null)
+            //     {
+            //         m_LearnButton.SetActive(false);
+            //     }
+            //     m_SurfacesTapped = 0;
+            //     m_ObjectSpawner.objectSpawned += OnObjectSpawned;
+            // }
+            if (m_LearnButton != null)
             {
-                m_CurrentGoal = m_OnboardingGoals.Dequeue();
-                m_StepList[m_CurrentGoalIndex - 1].stepObject.SetActive(false);
-                m_StepList[m_CurrentGoalIndex].stepObject.SetActive(true);
-                m_StepButtonTextField.text = m_StepList[m_CurrentGoalIndex].buttonText;
-                m_SkipButton.SetActive(m_StepList[m_CurrentGoalIndex].includeSkipButton);
-            }
-            else
-            {
-                m_AllGoalsFinished = true;
-                ForceEndAllGoals();
-            }
-
-            if (m_CurrentGoal.CurrentGoal == OnboardingGoals.FindSurfaces)
-            {
-                if (m_FadeMaterial != null)
-                    m_FadeMaterial.FadeSkybox(true);
-
-                if (m_PassthroughToggle != null)
-                    m_PassthroughToggle.isOn = true;
-
-                if (m_LearnButton != null)
-                {
-                    m_LearnButton.SetActive(true);
-                }
-
-                StartCoroutine(TurnOnPlanes(true));
-            }
-            else if (m_CurrentGoal.CurrentGoal == OnboardingGoals.TapSurface)
-            {
-                if (m_LearnButton != null)
-                {
-                    m_LearnButton.SetActive(false);
-                }
-                m_SurfacesTapped = 0;
-                m_ObjectSpawner.objectSpawned += OnObjectSpawned;
+                m_LearnButton.SetActive(true);
             }
         }
 
@@ -339,32 +343,36 @@ namespace UnityEngine.XR.Templates.MR
 
         public void ForceEndAllGoals()
         {
-            m_CoachingUIParent.transform.localScale = Vector3.zero;
+            // m_CoachingUIParent.transform.localScale = Vector3.zero;
 
-            TurnOnVideoPlayer();
+            // TurnOnVideoPlayer();
 
-            if (m_VideoPlayerToggle != null)
-                m_VideoPlayerToggle.isOn = true;
+            // if (m_VideoPlayerToggle != null)
+            //     m_VideoPlayerToggle.isOn = true;
 
-            if (m_FadeMaterial != null)
-            {
-                m_FadeMaterial.FadeSkybox(true);
+            // if (m_FadeMaterial != null)
+            // {
+            //     m_FadeMaterial.FadeSkybox(true);
 
-                if (m_PassthroughToggle != null)
-                    m_PassthroughToggle.isOn = true;
-            }
+            //     if (m_PassthroughToggle != null)
+            //         m_PassthroughToggle.isOn = true;
+            // }
 
+            // if (m_LearnButton != null)
+            // {
+            //     m_LearnButton.SetActive(false);
+            // }
+
+            // if (m_LearnModal != null)
+            // {
+            //     m_LearnModal.transform.localScale = Vector3.zero;
+            // }
+
+            // StartCoroutine(TurnOnARFeatures());
             if (m_LearnButton != null)
             {
-                m_LearnButton.SetActive(false);
+                m_LearnButton.SetActive(true);
             }
-
-            if (m_LearnModal != null)
-            {
-                m_LearnModal.transform.localScale = Vector3.zero;
-            }
-
-            StartCoroutine(TurnOnARFeatures());
         }
 
         public void ResetCoaching()
