@@ -35,6 +35,9 @@ namespace UnityEngine.XR.Templates.MR
         bool m_AllGoalsFinished;
         int m_SurfacesTapped;
         int m_CurrentGoalIndex = 0;
+        int onoff_status = 1;
+        public TMP_Text on;
+        public TMP_Text off;
 
         [Serializable]
         class Step
@@ -56,6 +59,7 @@ namespace UnityEngine.XR.Templates.MR
 
         [SerializeField]
         public GameObject m_SkipButton;
+        public GameObject m_ContinueButton;
 
         [SerializeField]
         GameObject m_LearnButton;
@@ -270,6 +274,26 @@ namespace UnityEngine.XR.Templates.MR
             if (m_LearnButton != null)
             {
                 m_LearnButton.SetActive(true);
+            }
+        }
+        public void onoff()
+        {
+            if (onoff_status == 1)
+            {
+                onoff_status = 0;
+                on.alpha = 0.5f;
+                off.alpha = 1.0f;
+                m_LearnButton.SetActive(false);
+                m_SkipButton.SetActive(false);
+                m_ContinueButton.SetActive(false);
+            }
+            else
+            {
+                onoff_status = 1;
+                on.alpha = 1.0f;
+                off.alpha = 0.5f;
+                m_SkipButton.SetActive(true);
+                m_ContinueButton.SetActive(true);
             }
         }
 
