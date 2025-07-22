@@ -1,44 +1,89 @@
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor;
 using TMPro;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using System.IO;
 
-public class TMPSceneChecker
+public class FixAllTMPFonts
 {
-    [MenuItem("Tools/Check TMP Fonts in All Scenes")]
-    public static void CheckAllScenes()
+    [MenuItem("Tools/Fix TMP Fonts In All Scenes & Prefabs")]
+    public static void FixFontsEverywhere()
     {
+        TMP_FontAsset defaultFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+        if (defaultFont == null)
+        {
+            Debug.LogError("❌ 找不到 LiberationSans SDF，請先從 Window > TextMeshPro > Import TMP Essentials");
+            return;
+        }
+
+        int fixedSceneCount = 0;
+        int fixedPrefabCount = 0;
+        string currentScene = SceneManager.GetActiveScene().path;
+
+        // 修復所有場景
         string[] scenePaths = Directory.GetFiles("Assets", "*.unity", SearchOption.AllDirectories);
-        int totalMissing = 0;
-
-        string currentScene = EditorSceneManager.GetActiveScene().path;
-
         foreach (string path in scenePaths)
         {
             var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
-            var tmps = GameObject.FindObjectsOfType<TextMeshProUGUI>();
-            int sceneMissing = 0;
+            var tmps = GameObject.FindObjectsOfType<TextMeshProUGUI>(true);
+            bool dirty = false;
 
             foreach (var tmp in tmps)
             {
                 if (tmp.font == null)
                 {
-                    Debug.LogWarning($"⚠️ [Scene: {scene.name}] TMP Missing Font: {tmp.name}", tmp.gameObject);
-                    sceneMissing++;
+                    Undo.RecordObject(tmp, "Fix TMP Font in Scene");
+                    tmp.font = defaultFont;
+                    EditorUtility.SetDirty(tmp);
+                    Debug.Log($"✅ 修復場景字型: {scene.name} → {tmp.name}", tmp.gameObject);
+                    fixedSceneCount++;
+                    dirty = true;
                 }
             }
 
-            Debug.Log($"🔎 檢查場景：{scene.name}，共找到 {sceneMissing} 個缺字型 TMP 元件");
-            totalMissing += sceneMissing;
+            if (dirty)
+            {
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+            }
         }
 
-        // 回到原本的場景
+        // 回復原本的場景
         if (!string.IsNullOrEmpty(currentScene))
         {
             EditorSceneManager.OpenScene(currentScene, OpenSceneMode.Single);
         }
 
-        Debug.Log($"✅ 全部場景檢查完畢，共 {scenePaths.Length} 個場景，缺字型 TMP 數量：{totalMissing}");
+        // 修復所有 prefab
+        string[] prefabPaths = Directory.GetFiles("Assets", "*.prefab", SearchOption.AllDirectories);
+        foreach (string path in prefabPaths)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null) continue;
+
+            var tmps = prefab.GetComponentsInChildren<TextMeshProUGUI>(true);
+            bool changed = false;
+
+            foreach (var tmp in tmps)
+            {
+                if (tmp != null && tmp.font == null)
+                {
+                    tmp.font = defaultFont;
+                    EditorUtility.SetDirty(tmp);
+                    Debug.Log($"✅ 修復 prefab 字型: {prefab.name} → {tmp.name}", tmp.gameObject);
+                    changed = true;
+                    fixedPrefabCount++;
+                }
+            }
+
+            if (changed)
+            {
+                PrefabUtility.SavePrefabAsset(prefab);
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"🎉 全部修復完成：共修場景 TMP {fixedSceneCount} 個，prefab TMP {fixedPrefabCount} 個。");
     }
 }

@@ -6814,7 +6814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013edc8954779784490e13656d9464ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: MainScene
+  sceneName: StartPage
 --- !u!1 &1130982733
 GameObject:
   m_ObjectHideFlags: 0
@@ -10492,7 +10492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: ' '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1c669a5f01cdbc4888d63f158a8b16b, type: 2}
   m_sharedMaterial: {fileID: -5818214746430251741, guid: c1c669a5f01cdbc4888d63f158a8b16b, type: 2}

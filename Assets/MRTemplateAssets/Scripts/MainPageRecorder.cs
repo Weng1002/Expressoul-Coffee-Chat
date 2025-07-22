@@ -9,7 +9,7 @@ public class AudioRecorder : MonoBehaviour
     private float saveInterval = 20f;
     private float nextSaveTime = 0f;
     private string micDevice;
-    private string savePath = @"data\sound";
+    private string savePath = @"data\\sound";
     private bool isRecording = false;
     public static string filepath;
 

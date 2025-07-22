@@ -53,6 +53,7 @@ namespace UnityEngine.XR.Templates.MR
         int[] order_list = new int[3];
         int question_refresh_times = 0;
         float time = 20;
+        float temp_time = 20;
         public static bool text_already;
         RectTransform rt;
 
@@ -149,7 +150,7 @@ namespace UnityEngine.XR.Templates.MR
                 m_FadeMaterial.FadeSkybox(false);
 
                 if (m_PassthroughToggle != null)
-                    m_PassthroughToggle.isOn = false;
+                    m_PassthroughToggle.isOn = true;
             }
 
             if (m_LearnButton != null)
@@ -215,7 +216,15 @@ namespace UnityEngine.XR.Templates.MR
 
         void Update()
         {
-            Debug.Log(time);
+            if (temp_time - time > 1)
+            {
+                Debug.Log(time);
+                temp_time = time;
+            }
+            if (onoff_status == 1 && text_already)
+            {
+                m_LearnButton.SetActive(true);
+            }
             if (time > 0)
             {
                 time -= Time.deltaTime;
@@ -230,13 +239,13 @@ namespace UnityEngine.XR.Templates.MR
                     keyword2.text = WavSender.K2;
                     text_already = false;
                     time = 20;
+                    temp_time = 20;
                     question_refresh_times = 0;
                 }
-                if (onoff_status == 1 && question_refresh_times == 0)
+                else
                 {
-                    m_LearnButton.SetActive(true);
+                    Debug.Log("Waiting...");
                 }
-
             }
             if (!m_AllGoalsFinished)
             {
@@ -420,7 +429,7 @@ namespace UnityEngine.XR.Templates.MR
                 onoff_status = 1;
                 on.alpha = 1.0f;
                 off.alpha = 0.5f;
-                if (question_refresh_times == 0)
+                if (question_refresh_times == 0 && text_already)
                 {
                     m_LearnButton.SetActive(true);
                 }
