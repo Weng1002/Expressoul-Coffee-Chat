@@ -26,13 +26,15 @@ About OpenHCI 2025 – Team 3 XRAI: 利用現有AI技術為工具，透過XR互�
 
 ![enginee_flow](image/enginee_flow.png)
 
-Input有雙方的背景資料與談話目標、對話音檔、以及使用者的選擇回饋。
+Input 有雙方的背景資料與談話目標(text)、對話音檔(audio)、以及使用者的選擇回饋(interactions)。
 
-這三筆inputs會經由Unity中的client端，發送這兩筆資料到外部server。
+這三筆 inputs 會經由 Unity 中的 C# client端，發送 HTTPS Request 這兩筆資料到外部 Python Flask Server。
 
-我們將Gemini API與server串接，根據所有input information，利用LLM判斷使用者可能較有興趣的話題與提示，其中Gemini使用到兩個版本模型，2.5_Pro應用在找共同點，而對話語音或元件更新，則選用快速的Flash。
+Flask Server 會去接收請求，然後我們串接 Gemini API，根據所有 input information 包成 Prompt，利用 LLM 判斷使用者可能較有興趣的話題與提示
 
-由Gemini輸出語句提示整理後，我們再回過頭提取關鍵詞句顯示在Unity UI上。
+其中 Gemini 使用到兩個版本模型，2.5 Pro 應用在找共同點，而對話語音或元件更新，則選用快速的2.5 Flash。
+
+由 Gemini 輸出語句提示整理後，打包成一包封包，交由 Server 發回 HTTPS Response，Client 端再去 extracting 關鍵詞句顯示在 Unity UI 上，完成前後端串接。
 
 ## Demo
 
