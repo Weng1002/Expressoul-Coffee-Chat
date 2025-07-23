@@ -5,4 +5,4 @@ About OpenHCI 2025 – Team 3 XRAI: 利用現有AI技術為工具，透過XR互�
 
 ## 主題探討
 
-![UCS](image/Problem.png)
+![Problem](image/Problem.png)
